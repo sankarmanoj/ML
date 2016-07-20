@@ -7,14 +7,14 @@ inX = data["x"]
 inY = data["y"]
 from copy import copy
 reg_lambda = 0.01
-epsilon = 0.1
+epsilon = 0.001
 biases = model["biases"]
 weights = model["weights"]
 def sigmoid(val):
-    return 1/(1+np.exp(-val))
+    return np.tanh(val)
 def dsig(val):
-    a = sigmoid(val)
-    return a*(1-a)
+    a  = np.power(np.tanh(val),2)
+    return 1-a
 # tries = input("Enter number of tries")
 def calculate(inputValue):
     # inter=[]
@@ -49,6 +49,12 @@ def train(inputValue,actualValue):
     reducdDw = []
     for x in range(len(deltaWeights)):
         reducdDw.append(np.average(deltaWeights[x],axis=0))
+    # print "Delta Weight"
+    # for x in reducdDw:
+    #     print x
+    # print "Weigths"
+    # for x in  weights:
+    #     print x
     for x in range(len(weights)):
         biases[x]-=epsilon*reducdDw[x]
         wTemp = np.dot(activ[x].T,deltaWeights[x])
@@ -86,4 +92,4 @@ if __name__ =="__main__":
     for x in range(times):
         cost(inX,inY)
         train(inX,inY)
-        load()
+        # load()
